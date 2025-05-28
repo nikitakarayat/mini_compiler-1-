@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #bceb98;
+    color: #333;
+    padding: 20px;
+}
+.dark-mode {
+    background: #222;
+    color: rgba(232, 234, 230, 0.999);
+}
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+textarea {
+    width: 100%;
+    height: 200px;
+    font-family: monospace;
+    font-size: 14px;
+    padding: 10px;
+}
+.controls {
+    margin: 10px 0;
+}
+button {
+    padding: 10px;
+    margin-right: 10px;
+}
+pre {
+    background: #88aff7;
+    padding: 10px;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+.dark-mode pre {
+    background: #333;
+    color: #ddd;
+}

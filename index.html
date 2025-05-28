@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Compiler Web</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Mini Compiler</h1>
+        <textarea id="code" placeholder="Enter your code here..."></textarea>
+        <div class="controls">
+            <button onclick="compileCode()">⚙️ Compile</button>
+            <button onclick="toggleTheme()">🌙 Toggle Theme</button>
+            <button onclick="startVoice()">🎤 Voice</button>
+        </div>
+        <pre id="output">Output will appear here...</pre>
+    </div>
+
+    <script>
+        function compileCode() {
+            const code = document.getElementById("code").value;
+            fetch("/compile", {
+                method: "POST",
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: "code=" + encodeURIComponent(code)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const output = document.getElementById("output");
+                if (data.success) {
+                    output.textContent = data.output;
+                } else {
+                    output.textContent = "❌ " + data.output;
+                }
+            });
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        function startVoice() {
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Voice recognition not supported in this browser.");
+                return;
+            }
+            const recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = "en-US";
+            recognition.onresult = function(event) {
+                const text = event.results[0][0].transcript.toLowerCase();
+                if (text.includes("compile")) compileCode();
+                else document.getElementById("code").value += text + " ";
+            };
+            recognition.start();
+        }
+    </script>
+</body>
+</html>
